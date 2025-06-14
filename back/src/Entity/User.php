@@ -7,80 +7,35 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource]
-
-class User implements  PasswordAuthenticatedUserInterface{
+class User implements PasswordAuthenticatedUserInterface, UserInterface
+{
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: "uuid", unique: true)]
-    private ?UuidInterface $id = null;
-    public function getId(): ?UuidInterface
-    {
-        return $this->id;
-    }
-    public function setId(UuidInterface $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
+    #[ORM\Column(type: 'string', length: 36)]
+    private ?string $id = null;
+
     #[ORM\Column(length: 255)]
     private ?string $username = null;
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-        return $this;
-    }
-    
+
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-        return $this;
-    }
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-        return $this;
-    }
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
-    
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?UserRecipes $userrecipes = null;
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var Collection<int, Ingredients>
@@ -96,22 +51,90 @@ class User implements  PasswordAuthenticatedUserInterface{
 
     public function __construct()
     {
+        $this->id = (string) Uuid::v4(); // Générer l'UUID dans le constructeur
         $this->ingredients = new ArrayCollection();
         $this->userRecipes = new ArrayCollection();
-}
-
-    public function getUseRrecipes(): ?UserRecipes
-    {
-        return $this->userrecipes;
     }
 
-    public function setUserRecipes(?UserRecipes $userrecipes): static
+    public function getId(): ?string
     {
-        $this->userrecipes = $userrecipes;
+        return $this->id;
+    }
 
+    public function setId(string $id): self
+    {
+        $this->id = $id;
         return $this;
     }
 
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Méthode requise par UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    
     /**
      * @return Collection<int, Ingredients>
      */
@@ -141,19 +164,14 @@ class User implements  PasswordAuthenticatedUserInterface{
 
         return $this;
     }
-#[ORM\Column(length: 255)]
-private ?string $password = null;
 
-public function getPassword(): ?string
-{
-    return $this->password;
-}
-
-public function setPassword(string $password): self
-{
-    $this->password = $password;
-    return $this;
-}
+    /**
+     * @return Collection<int, UserRecipes>
+     */
+    public function getUserRecipes(): Collection
+    {
+        return $this->userRecipes;
+    }
 
     public function addUserRecipe(UserRecipes $userRecipe): static
     {
@@ -177,5 +195,21 @@ public function setPassword(string $password): self
         return $this;
     }
 
-    
+    /**
+     * Méthode requise par UserInterface
+     * Retourne l'identifiant unique de l'utilisateur (email dans ce cas)
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * Méthode requise par UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
 }
