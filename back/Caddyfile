@@ -1,0 +1,9 @@
+api.homecook.wip {
+	tls internal
+	reverse_proxy localhost:8000
+}
+
+homecook.wip {
+	tls internal
+	reverse_proxy localhost:4200
+}
