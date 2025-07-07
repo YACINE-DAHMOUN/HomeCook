@@ -23,8 +23,10 @@
         "symfony/dotenv": "7.2.*",
         "symfony/expression-language": "7.2.*",
         "symfony/flex": "^2",
+        "symfony/form": "7.2.*",
         "symfony/framework-bundle": "7.2.*",
         "symfony/http-client": "7.2.*",
+        "symfony/mailer": "7.2.*",
         "symfony/maker-bundle": "^1.63",
         "symfony/password-hasher": "7.2.*",
         "symfony/property-access": "7.2.*",
@@ -34,7 +36,8 @@
         "symfony/serializer": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+        "symfonycasts/verify-email-bundle": "*"
     },
     "config": {
         "allow-plugins": {
