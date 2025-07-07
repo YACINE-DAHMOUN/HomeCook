@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule], // Add ReactiveFormsModule
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css']
+  templateUrl: './register-form.component.html',
+  styleUrls: ['./register-form.component.css']
 })
 export class LoginFormComponent implements OnInit { // Fixed class name capitalization
   registerForm!: FormGroup;
