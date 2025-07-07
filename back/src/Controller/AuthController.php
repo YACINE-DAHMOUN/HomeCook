@@ -69,7 +69,7 @@ class AuthController extends AbstractController
             $this->logger->info('Creating new user');
 
             // Créer le nouvel utilisateur
-            $user = new User();
+            $user = new User($data['email']); // Remplacez $data['email'] par l'argument attendu si différent
             $user->setUsername($data['username']);
             $user->setFirstName($data['firstName']);
             $user->setLastName($data['lastName']);
