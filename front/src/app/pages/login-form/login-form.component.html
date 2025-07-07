@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5',
+                        'primary-dark': '#3730a3',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-purple-100 flex items-center justify-center p-4">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Logo/Header -->
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900">Créer un compte</h2>
+            <p class="mt-2 text-gray-600">Rejoignez-nous dès aujourd'hui</p>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
+            <!-- Extrait du formulaire corrigé pour Angular -->
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="onSubmit()"
+  class="space-y-6"
+  novalidate
+>
+  <!-- Nom d'utilisateur -->
+  <div>
+    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+      Nom d'utilisateur *
+    </label>
+    <div class="relative">
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="hasError('username', 'required') || hasError('username', 'pattern')"
+        placeholder="nom_utilisateur"
+      >
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+      </div>
+    </div>
+    <p *ngIf="getErrorMessage('username')" class="mt-1 text-xs text-red-500">
+      {{ getErrorMessage('username') }}
+    </p>
+  </div>
+
+  <!-- Prénom et Nom -->
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
+        Prénom *
+      </label>
+      <input
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="hasError('firstName', 'required')"
+        placeholder="John"
+      >
+      <p *ngIf="getErrorMessage('firstName')" class="mt-1 text-xs text-red-500">
+        {{ getErrorMessage('firstName') }}
+      </p>
+    </div>
+    <div>
+      <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
+        Nom *
+      </label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="hasError('lastName', 'required')"
+        placeholder="Doe"
+      >
+      <p *ngIf="getErrorMessage('lastName')" class="mt-1 text-xs text-red-500">
+        {{ getErrorMessage('lastName') }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+      Adresse email *
+    </label>
+    <div class="relative">
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="hasError('email', 'required') || hasError('email', 'email')"
+        placeholder="john.doe@example.com"
+      >
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+        </svg>
+      </div>
+    </div>
+    <p *ngIf="getErrorMessage('email')" class="mt-1 text-xs text-red-500">
+      {{ getErrorMessage('email') }}
+    </p>
+  </div>
+
+  <!-- Mot de passe -->
+  <div>
+    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+      Mot de passe *
+    </label>
+    <div class="relative">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        id="password"
+        formControlName="password"
+        class="w-full px-4 py-3 pl-12 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="hasError('password', 'required') || hasError('password', 'passwordInvalid')"
+        placeholder="••••••••"
+      >
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+      </div>
+      <button
+        type="button"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center"
+        (click)="togglePassword('password')"
+      >
+        <svg class="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+      </button>
+    </div>
+    <div *ngIf="password?.value && passwordStrength > 0" class="mt-2">
+      <div class="flex space-x-1">
+        <div class="flex-1 h-2 bg-gray-200 rounded-full">
+          <div
+            class="h-2 rounded-full transition-all duration-300"
+            [ngClass]="passwordStrengthColor"
+            [style.width.%]="passwordStrength"
+          ></div>
+        </div>
+      </div>
+      <p class="text-xs mt-1" [ngClass]="passwordStrengthColor">
+        {{ passwordStrengthText }}
+      </p>
+    </div>
+    <p *ngIf="getErrorMessage('password')" class="mt-1 text-xs text-red-500">
+      {{ getErrorMessage('password') }}
+    </p>
+  </div>
+
+  <!-- Confirmation mot de passe -->
+  <div>
+    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+      Confirmer le mot de passe *
+    </label>
+    <div class="relative">
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        class="w-full px-4 py-3 pl-12 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+        [class.border-red-500]="registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched"
+        placeholder="••••••••"
+      >
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <button
+        type="button"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center"
+        (click)="togglePassword('confirmPassword')"
+      >
+        <svg class="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+      </button>
+    </div>
+    <p *ngIf="getErrorMessage('confirmPassword')" class="mt-1 text-xs text-red-500">
+      {{ getErrorMessage('confirmPassword') }}
+    </p>
+  </div>
+
+  <!-- Conditions d'utilisation -->
+  <div class="flex items-start">
+    <input
+      id="terms"
+      type="checkbox"
+      formControlName="terms"
+      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1 transition-colors"
+    >
+    <label for="terms" class="ml-2 block text-sm text-gray-700">
+      J'accepte les
+      <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium">conditions d'utilisation</a>
+      et la
+      <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium">politique de confidentialité</a>
+    </label>
+  </div>
+  <p *ngIf="hasError('terms', 'required')" class="mt-1 text-xs text-red-500">
+    Vous devez accepter les conditions d'utilisation
+  </p>
+
+  <!-- Messages d'erreur -->
+  <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+    <div class="flex">
+      <svg class="h-5 w-5 text-red-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <span>{{ errorMessage }}</span>
+    </div>
+  </div>
+
+  <!-- Bouton d'inscription -->
+  <button
+    type="submit"
+    [disabled]="isLoading || registerForm.invalid"
+    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    <span *ngIf="!isLoading">Créer mon compte</span>
+    <span *ngIf="isLoading" class="flex items-center justify-center">
+      <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Création en cours...
+    </span>
+  </button>
+</form>
+
+            <!-- Lien de connexion -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Déjà un compte ?
+                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+<body>
+<html>
