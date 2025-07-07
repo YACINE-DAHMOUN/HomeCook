@@ -1,6 +1,17 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http'; // <-- AJOUTER
+import { provideRouter } from '@angular/router'; // si tu utilises le routing
+import { routes } from './app/app.routes'; // adapter selon ton projet
+import { AuthInterceptor } from './interceptors/interceptor';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideRouter(routes),
+    { provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
+});
